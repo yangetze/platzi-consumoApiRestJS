@@ -32,8 +32,9 @@ async function getRandomDoggie() {
   if (status === 200) {
     const size = data.length;
     var i = 1;
+    const htmlPosition = GetSectionAndCleanBeforeShowImages("random");
+
     data.forEach((doggie) => {
-      const htmlPosition = document.getElementById("random");
       const article = document.createElement("article");
       const valueId = "doggie_" + i;
       const img = createImage(doggie.url);
@@ -51,19 +52,15 @@ async function getRandomDoggie() {
 }
 
 async function getFavoritesDoggies() {
-  try {
-    const res = await fetch(Doggie_URL_Favorites, {
-      method: "GET",
-      headers: {
-        "X-API-KEY": API_KEY,
-      },
+  const { data, status } = await instance
+    .get(favorites, { params: { limit: 9 } })
+    .catch(function (error) {
+      errorMessage(error.toJSON());
     });
-    const status = res.status;
-    if (status !== 200)
-      throw new Error(`URL: ${Doggie_Favorites} - Status: ${status}`);
-    const data = await res.json();
-    const htmlPosition = document.getElementById("listFavoritesDoggies");
-    htmlPosition.innerHTML = "";
+  if (status === 200) {
+    const htmlPosition = GetSectionAndCleanBeforeShowImages(
+      "listFavoritesDoggies"
+    );
     data.forEach((doggie) => {
       const article = document.createElement("article");
       const div = document.createElement("div");
@@ -72,9 +69,24 @@ async function getFavoritesDoggies() {
       article.appendChild(div).appendChild(createDeleteBtn(doggie.id));
       htmlPosition.appendChild(article);
     });
-  } catch (error) {
-    errorMessage(error);
   }
+  
+  // Búsqueda con try-catch
+  // try {
+  //   const res = await fetch(Doggie_URL_Favorites, {
+  //     method: "GET",
+  //     headers: {
+  //       "X-API-KEY": API_KEY,
+  //     },
+  //   });
+  //   const status = res.status;
+  //   if (status !== 200)
+  //     throw new Error(`URL: ${Doggie_Favorites} - Status: ${status}`);
+  //   const data = await res.json();
+
+  // } catch (error) {
+  //   errorMessage(error);
+  //}
 }
 
 async function saveDoggie(paramId) {
@@ -244,6 +256,12 @@ async function UploadDoggieFromModal() {
   } else {
     errorMessage(res);
   }
+}
+
+function GetSectionAndCleanBeforeShowImages(sectionId) {
+  const result = document.getElementById(sectionId);
+  result.innerHTML = "";
+  return result;
 }
 
 getRandomDoggie();
