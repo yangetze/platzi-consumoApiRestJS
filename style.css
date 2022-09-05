@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap');
+html, button {
+  font-family: 'Merriweather', serif;
+}
+
+.fav {
+  border: none;
+  background-color: ghostwhite;
+}
+
+#randomDoggies article {
+  margin: 0 auto;
+  padding: 0.5em;
+}
+
+#error {
+  border: 2px solid red;
+  font-size: 1.25em;
+  font-weight: bold;
+  padding: 0.5em;
+  display: none;
+}
+
+.d-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.text-end {
+  text-align: end;
+}
+
+.text-center {
+  text-align: center;
+}
+article {
+  height: 33% !important;
+}
+
